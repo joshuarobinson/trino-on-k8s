@@ -1,0 +1,111 @@
+---
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: redash-cfg
+data:
+  PYTHONUNBUFFERED: "0"
+  REDASH_LOG_LEVEL: "INFO"
+  POSTGRES_PASSWORD: "insecure"
+  REDASH_DATABASE_URL: "postgresql://postgres:insecure@localhost/postgres"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redash
+spec:
+  selector:
+    matchLabels:
+      app: redash
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: redash
+    spec:
+      volumes:
+      - name: postgres-for-redash
+        persistentVolumeClaim:
+          claimName: pgredash-pv-claim
+      containers:
+      - name: redis
+        image: redis:5.0-alpine
+        ports:
+        - containerPort: 6379
+        imagePullPolicy: Always
+      - name:  postgres
+        image: postgres:9.5-alpine
+        envFrom:
+        - configMapRef:
+            name: redash-cfg
+        volumeMounts:
+        - name: postgres-for-redash 
+          mountPath: /var/lib/postgresql/data
+      - name: server
+        image: redash/redash:7.0.0.b18042
+        envFrom:
+        - configMapRef:
+            name: redash-cfg
+        env:
+        - name: REDASH_WEB_WORKERS
+          value: "4"
+        args: ["server"]
+        ports:
+        - containerPort: 5000
+          name: redash
+      - name: scheduler
+        image: redash/redash:7.0.0.b18042
+        envFrom:
+        - configMapRef:
+            name: redash-cfg
+        env:
+        - name: QUEUES
+          value: "celery"
+        - name: WORKERS_COUNT
+          value: "1"
+        args: ["scheduler"]
+      - name: scheduled-worker
+        image: redash/redash:7.0.0.b18042
+        envFrom:
+        - configMapRef:
+            name: redash-cfg
+        env:
+        - name: QUEUES
+          value: "scheduled_queries,schemas"
+        - name: WORKERS_COUNT
+          value: "1"
+        args: ["worker"]
+      - name: adhoc-worker
+        image: redash/redash:7.0.0.b18042
+        envFrom:
+        - configMapRef:
+            name: redash-cfg
+        env:
+        - name: QUEUES
+          value: "queries"
+        - name: WORKERS_COUNT
+          value: "2"
+        args: ["worker"]
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pgredash-pv-claim
+spec:
+  storageClassName: pure-block
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Ti
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redash
+spec:
+  ports:
+  - port: 5000
+  selector:
+    app: redash

@@ -1,0 +1,14 @@
+<configuration>
+    <property>
+        <name>fs.s3a.connection.ssl.enabled</name>
+	<value>false</value>
+    </property>
+    <property>
+	<name>fs.s3a.endpoint</name>
+	<value>10.62.64.200</value>
+    </property>
+    <property>
+	<name>fs.s3a.fast.upload</name>
+	<value>true</value>
+    </property>
+</configuration>

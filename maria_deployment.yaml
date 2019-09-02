@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metastore-db
+spec:
+  ports:
+  - port: 13306
+    targetPort: 3306
+  selector:
+    app: mysql
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mariadb
+        image: "mariadb/server:latest"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: mypass
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mariadb-for-hive
+          mountPath: /var/lib/mysql
+        resources:
+          requests:
+            memory: "8G"
+            cpu: 2
+      volumes:
+      - name: mariadb-for-hive
+        persistentVolumeClaim:
+          claimName: maria-pv-claim
