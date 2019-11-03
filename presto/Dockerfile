@@ -4,8 +4,9 @@ RUN apt-get update && apt-get install -y curl python --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Download and extract the Presto package.
+# https://prestosql.io/docs/current/installation/deployment.html
 ARG PRESTO_VER
-RUN curl https://repo1.maven.org/maven2/com/facebook/presto/presto-server/$PRESTO_VER/presto-server-$PRESTO_VER.tar.gz \
+RUN curl https://repo1.maven.org/maven2/io/prestosql/presto-server/$PRESTO_VER/presto-server-$PRESTO_VER.tar.gz \
 	| tar xvz -C /opt/  \
 	&& ln -s /opt/presto-server-$PRESTO_VER /opt/presto-server \
 	&& mkdir -p /opt/presto-server/etc \

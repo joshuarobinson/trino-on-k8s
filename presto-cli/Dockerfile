@@ -4,9 +4,9 @@ FROM openjdk:8-slim
 RUN apt-get update && apt-get install -y curl less --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/*
 
-# https://prestodb.github.io/docs/current/installation/cli.html
+# https://prestosql.io/docs/current/installation/cli.html
 ARG PRESTO_VER
-RUN curl -o /opt/presto-cli https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$PRESTO_VER/presto-cli-$PRESTO_VER-executable.jar \
+RUN curl -o /opt/presto-cli https://repo1.maven.org/maven2/io/prestosql/presto-cli/$PRESTO_VER/presto-cli-$PRESTO_VER-executable.jar \
 	&& chmod +x /opt/presto-cli
 
 # Remove curl.

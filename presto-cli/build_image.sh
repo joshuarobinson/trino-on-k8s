@@ -3,7 +3,7 @@
 set -e
 
 REPONAME=joshuarobinson
-PRESTOVER=0.227
+PRESTOVER=322
 TAG=presto-cli
 
 docker build --build-arg PRESTO_VER=$PRESTOVER -t $TAG .
