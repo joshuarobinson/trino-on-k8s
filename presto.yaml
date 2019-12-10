@@ -66,7 +66,7 @@ kind: Deployment
 metadata:
   name: presto-worker
 spec:
-  replicas: 2
+  replicas: 5
   selector:
     matchLabels:
       app: presto-worker
@@ -123,5 +123,5 @@ spec:
   - name: presto-cli
     image: joshuarobinson/presto-cli
     command: ["tail", "-f", "/dev/null"]
-    imagePullPolicy: IfNotPresent
+    imagePullPolicy: Always
   restartPolicy: Always

@@ -3,7 +3,7 @@
 set -e
 
 REPONAME=joshuarobinson
-PRESTOVER=322
+PRESTOVER=328
 
 docker build --build-arg PRESTO_VER=$PRESTOVER -t fb-presto .
 

@@ -16,6 +16,7 @@ RUN curl https://repo1.maven.org/maven2/io/prestosql/presto-server/$PRESTO_VER/p
 COPY jvm.config /opt/presto-server/etc/jvm.config
 COPY tpcds.properties /opt/presto-server/etc/catalog/tpcds.properties
 COPY memory.properties /opt/presto-server/etc/catalog/memory.properties
+COPY mysql.properties /opt/presto-server/etc/catalog/mysql.properties
 
 # Copy script to automatically generate the remaining configs at launch time.
 COPY autoconfig_and_launch.sh /opt/autoconfig_and_launch.sh

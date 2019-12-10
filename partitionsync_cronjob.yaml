@@ -1,0 +1,40 @@
+---
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: presto-sync-scripts
+data:
+  presto-sync.sh: |
+    set -e
+    
+    TABLES=$(/opt/presto-cli --server presto:8080 --catalog hive --schema default --execute "SHOW TABLES;" | grep table | sed s/\"//g)
+    for i in $TABLES; do
+      echo $i
+      /opt/presto-cli --server presto:8080 --catalog hive --execute "CALL system.sync_partition_metadata(schema_name=>'default', table_name=>'$i', mode=>'FULL');"
+    done
+    echo "Done"
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cron-presto-sync
+spec:
+  schedule: "0 12 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: presto-timed-worker
+              image: joshuarobinson/presto-cli
+              command: ["sh", "-c", "--"]
+              args: ["bash /opt/presto-sync.sh"]
+              volumeMounts:
+              - name: presto-scripts-vol
+                mountPath: /opt/presto-sync.sh
+                subPath: presto-sync.sh
+          volumes:
+          - name: presto-scripts-vol
+            configMap:
+              name: presto-sync-scripts
+          restartPolicy: OnFailure
