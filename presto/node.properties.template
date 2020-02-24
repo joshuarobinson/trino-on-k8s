@@ -1,2 +1,5 @@
 node.environment=test
 node.data-dir=/var/presto/data
+spiller-spill-path=/tmp
+max-spill-per-node=4TB
+query-max-spill-per-node=1TB

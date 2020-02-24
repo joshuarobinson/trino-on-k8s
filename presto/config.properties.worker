@@ -1,6 +1,6 @@
 coordinator=false
 http-server.http.port=8080
 query.max-memory=50GB
-query.max-memory-per-node=1GB
-query.max-total-memory-per-node=2GB
+query.max-memory-per-node=8GB
+query.max-total-memory-per-node=10GB
 discovery.uri=http://presto:8080

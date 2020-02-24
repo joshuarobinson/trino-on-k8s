@@ -3,6 +3,7 @@ hive.metastore.uri=thrift://metastore:9083
 
 hive.allow-drop-table=true
 hive.max-partitions-per-scan=1000000
+hive.compression-codec=SNAPPY
 
 hive.s3.endpoint=10.62.64.200
 hive.s3.path-style-access=true
