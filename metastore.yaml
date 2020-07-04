@@ -51,7 +51,7 @@ spec:
         args: ["-p", "9083"]
         resources:
           requests:
-            memory: "16G"
+            memory: "32G"
             cpu: 4
         imagePullPolicy: Always
       volumes:

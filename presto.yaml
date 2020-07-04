@@ -62,16 +62,15 @@ spec:
             name: presto-cfg
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: presto-worker
 spec:
-  replicas: 5
+  serviceName: presto-worker 
+  replicas: 24
   selector:
     matchLabels:
       app: presto-worker
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -103,16 +102,28 @@ spec:
         - name: presto-cfg-vol
           mountPath: /opt/presto-server/etc/catalog/hive.properties.template
           subPath: hive.properties.template
+        - name: presto-tmp-data
+          mountPath: /tmp
         command: ['/opt/autoconfig_and_launch.sh']
         resources:
           requests:
-            memory: "16G"
-            cpu: 4
+            memory: "64G"
+            cpu: 12
         imagePullPolicy: Always
       volumes:
         - name: presto-cfg-vol
           configMap:
             name: presto-cfg
+  volumeClaimTemplates:
+  - metadata:
+      name: presto-tmp-data
+    spec:
+      storageClassName: pure-file
+      accessModes:
+      - ReadWriteMany
+      resources:
+        requests:
+          storage: 8Ti
 ---
 apiVersion: v1
 kind: Pod
