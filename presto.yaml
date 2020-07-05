@@ -42,7 +42,7 @@ spec:
               key: secret-key
         volumeMounts:
         - name: presto-cfg-vol
-          mountPath: opt/presto-server/etc/config.properties
+          mountPath: /opt/presto-server/etc/config.properties
           subPath: config.properties.coordinator
         - name: presto-cfg-vol
           mountPath: /opt/presto-server/etc/node.properties.template
@@ -67,7 +67,7 @@ metadata:
   name: presto-worker
 spec:
   serviceName: presto-worker 
-  replicas: 24
+  replicas: 10
   selector:
     matchLabels:
       app: presto-worker
@@ -94,7 +94,7 @@ spec:
               key: secret-key
         volumeMounts:
         - name: presto-cfg-vol
-          mountPath: opt/presto-server/etc/config.properties
+          mountPath: /opt/presto-server/etc/config.properties
           subPath: config.properties.worker
         - name: presto-cfg-vol
           mountPath: /opt/presto-server/etc/node.properties.template
