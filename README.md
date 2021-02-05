@@ -1,16 +1,16 @@
 # presto-on-k8s
-Setup for running Presto with Hive Metastore on Kubernetes as introduced in [this blog post](https://medium.com/@joshua_robinson/presto-powered-s3-data-warehouse-on-kubernetes-aea89d2f40e8).
+Setup for running TrinoDB (formerly Prestosql) with Hive Metastore on Kubernetes as introduced in [this blog post](https://medium.com/@joshua_robinson/presto-powered-s3-data-warehouse-on-kubernetes-aea89d2f40e8).
 
 See [previous blog post](https://medium.com/@joshua_robinson/presto-on-flashblade-s3-486ecb449574)
-for more information about running Presto on FlashBlade.
+for more information about running Trino/Presto on FlashBlade.
 
 # How to Use
 
-1. Build Docker images for Hive Metastore and Presto
+1. Build Docker image for Hive Metastore
 
 2. Deploy Hive Metastore: MariaDB (pvs and deployment), init-schemas, Metastore
 
-3. Deploy Presto services (coordinator, workers, and cli)
+3. Deploy Trino services (coordinator, workers, and cli)
 
 4. Deploy Redash.
 
@@ -18,7 +18,7 @@ Assumptions: working Kubernetes deployment and S3 object store (e.g., FlashBlade
 
 Things you may need to modify:
 * Docker repository name ($REPONAME) in build_image scripts and yaml files.
-* DataVIP and access keys for FlashBlade (fs.s3a.endpoint and hive.s3.endpoint)
+* DataVIP and access keys for FlashBlade (fs.s3a.endpoint and hive.s3a.endpoint)
 * StorageClass for the MariaDB volume.
 * Memory settings and worker counts.
 
@@ -33,16 +33,15 @@ Yaml for MariaDB
 Yaml for init-schemas
  * One-time K8s job to initiate the MariaDB tables.
 
-Yaml for Metastore
+Yaml for Metastore service
 
-# Presto Coordinator/Workers/CLI
+# Trino Coordinator/Workers/CLI
 
-Dockerfile for PrestoSql.
+Leverages the official [Trino Docker image](https://github.com/trinodb/docker-images).
 
-Script: autoconfig_and_launch.sh
- * Generate final presto config files at pod startup time.
+Yaml for Trino Coordinator/Workers
 
-Yaml for Presto Coordinator/Workers
+Trino CLI pod
 
-Dockerfile for Presto CLI
- * Simple image to make interactive use of Presto easier.
+Create SQL shell as:
+```kubectl exec -it pod/trino-cli -- trino --server trino:8080 --catalog hive --schema default
