@@ -1,4 +1,4 @@
-# presto-on-k8s
+# trino-on-k8s
 Setup for running TrinoDB (formerly Prestosql) with Hive Metastore on Kubernetes as introduced in [this blog post](https://medium.com/@joshua_robinson/presto-powered-s3-data-warehouse-on-kubernetes-aea89d2f40e8).
 
 See [previous blog post](https://medium.com/@joshua_robinson/presto-on-flashblade-s3-486ecb449574)
@@ -8,7 +8,7 @@ for more information about running Trino/Presto on FlashBlade.
 
 1. Build Docker image for Hive Metastore
 
-2. Deploy Hive Metastore: MariaDB (pvs and deployment), init-schemas, Metastore
+2. Deploy Hive Metastore: MariaDB (pvc and deployment), init-schemas, Metastore
 
 3. Deploy Trino services (coordinator, workers, and cli)
 
@@ -44,4 +44,4 @@ Yaml for Trino Coordinator/Workers
 Trino CLI pod
 
 Create SQL shell as:
-```kubectl exec -it pod/trino-cli -- trino --server trino:8080 --catalog hive --schema default
+```kubectl exec -it pod/trino-cli -- trino --server trino:8080 --catalog hive --schema default```
