@@ -3,7 +3,7 @@
 set -e
 
 REPONAME=joshuarobinson
-PRESTOVER=337
+PRESTOVER=345
 
 ## Build Presto-server
 

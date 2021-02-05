@@ -33,12 +33,12 @@ spec:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
             secretKeyRef:
-              name: irp210-s3-keys
+              name: my-s3-keys
               key: access-key
         - name: AWS_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
-              name: irp210-s3-keys
+              name: my-s3-keys
               key: secret-key
         volumeMounts:
         - name: presto-cfg-vol
@@ -77,7 +77,7 @@ spec:
         app: presto-worker
     spec:
       containers:
-      - name: metastore
+      - name: presto
         image: joshuarobinson/fb-presto
         ports:
         - containerPort: 8080
@@ -85,12 +85,12 @@ spec:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
             secretKeyRef:
-              name: irp210-s3-keys
+              name: my-s3-keys
               key: access-key
         - name: AWS_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
-              name: irp210-s3-keys
+              name: my-s3-keys
               key: secret-key
         volumeMounts:
         - name: presto-cfg-vol
@@ -118,9 +118,9 @@ spec:
   - metadata:
       name: presto-tmp-data
     spec:
-      storageClassName: pure-file
+      storageClassName: pure-block
       accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
       resources:
         requests:
           storage: 8Ti
