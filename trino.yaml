@@ -54,6 +54,9 @@ spec:
           mountPath: /etc/trino/catalog/hive.properties
           subPath: hive.properties
         - name: trino-cfg-vol
+          mountPath: /etc/trino/catalog/iceberg.properties
+          subPath: iceberg.properties
+        - name: trino-cfg-vol
           mountPath: /etc/trino/catalog/mysql.properties
           subPath: mysql.properties
         resources:
@@ -112,6 +115,9 @@ spec:
         - name: trino-cfg-vol
           mountPath: /etc/trino/catalog/hive.properties
           subPath: hive.properties
+        - name: trino-cfg-vol
+          mountPath: /etc/trino/catalog/iceberg.properties
+          subPath: iceberg.properties
         - name: trino-cfg-vol
           mountPath: /etc/trino/catalog/mysql.properties
           subPath: mysql.properties
