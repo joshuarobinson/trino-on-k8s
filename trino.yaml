@@ -33,13 +33,13 @@ spec:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
             secretKeyRef:
-              name: my-s3-keys
-              key: access-key
+              name: obslytics-wrapper-secret
+              key: access_key
         - name: AWS_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
-              name: my-s3-keys
-              key: secret-key
+              name: obslytics-wrapper-secret
+              key: secret_key
         volumeMounts:
         - name: trino-cfg-vol
           mountPath: /etc/trino/jvm.config
@@ -95,13 +95,13 @@ spec:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
             secretKeyRef:
-              name: my-s3-keys
-              key: access-key
+              name: obslytics-wrapper-secret
+              key: access_key
         - name: AWS_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
-              name: my-s3-keys
-              key: secret-key
+              name: obslytics-wrapper-secret
+              key: secret_key
         volumeMounts:
         - name: trino-cfg-vol
           mountPath: /etc/trino/jvm.config

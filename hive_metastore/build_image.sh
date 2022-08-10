@@ -2,14 +2,14 @@
 
 set -e
 
-REPONAME=joshuarobinson
+REPONAME=anxhela21
 TAG=hivemetastore
 
 docker build -t $TAG .
 
 # Tag and push to the public docker repository.
 docker tag $TAG $REPONAME/$TAG
-docker push $REPONAME/$TAG
+docker push quay.io/$REPONAME/$TAG
 
 
 # Update configmaps

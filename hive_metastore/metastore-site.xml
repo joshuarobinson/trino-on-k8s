@@ -24,10 +24,6 @@
 	<value>mypass</value>
 </property>
 <property>
-	<name>metastore.warehouse.dir</name>
-	<value>s3a://joshuarobinson/warehouse/</value>
-</property>
-<property>
 	<name>metastore.thrift.port</name>
 	<value>9083</value>
 </property>

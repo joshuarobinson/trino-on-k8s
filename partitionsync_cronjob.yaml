@@ -26,7 +26,7 @@ spec:
         spec:
           containers:
             - name: presto-timed-worker
-              image: joshuarobinson/presto-cli
+              image: anxhela21/hivemetastore:v3
               command: ["sh", "-c", "--"]
               args: ["bash /opt/presto-sync.sh"]
               volumeMounts:
